@@ -1,8 +1,10 @@
 import tornado.ioloop
 import tornado.web
 
+sms_data="sms/data.txt"
+
 def data_append(number,datetime,text):
-    f=open("sms/data.txt","a")
+    f=open(sms_data,"a")
     f.write(number)
     f.write(" ")
     f.write(datetime)
@@ -13,25 +15,25 @@ def data_append(number,datetime,text):
 
 def getSMSList():
     sms_list=[]
-    f=open("sms/data.txt","r")
+    f=open(sms_data,"r")
     sms_list=f.readlines()
     f.close()
+    sms_list.reverse()
     return sms_list
 
-def get_sms_list_sort(sms_list):
-    sms_list_sort=[]
-    k=len(sms_list)
-    print k
-    for i in range(k):
-        sms_list_sort.append(sms_list[(k-1-i)])
-        #print sms_list[k-1-i]
-    return sms_list_sort
+def get_the_test_sms(sms_list):
+    sms_test_list=[]
+    for sms in sms_list:
+        if sms.find("5359071") != -1:
+			sms_test_list.append(sms)
+    return sms_test_list
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         if self.get_argument("get_token")=="XXXXXXXXX md5sum code XXXXXXXXXXX":
             sms_list = getSMSList()
-            self.render("templates/index.html",smslist=get_sms_list_sort(sms_list))
+            self.render("templates/index.html",smslist=sms_list)
 
     def post(self):
         if self.get_argument("post_token")=="XXXXXXXXX another md5sum code XXXXXXXXXXX":
@@ -42,8 +44,15 @@ class MainHandler(tornado.web.RequestHandler):
             data=number+" "+datetime+" "+text
             #print data+"IS SENT"
 
+class SmsHandler(tornado.web.RequestHandler):
+    def get(self):
+        sms_list=getSMSList()
+	sms_test_list=get_the_test_sms(sms_list)
+	self.render("templates/index.html",smslist=sms_test_list)
+
 application = tornado.web.Application([
     (r"/test", MainHandler),
+	(r"/showyoursms",SmsHandler),
     (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": "static/css"}),
     (r"/fonts/(.*)", tornado.web.StaticFileHandler, {"path": "static/fonts"}),
     (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": "static/js"}),
