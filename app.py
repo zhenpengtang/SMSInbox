@@ -29,12 +29,20 @@ def get_sms_list_sort(sms_list):
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+<<<<<<< HEAD
         if self.get_argument("get_token")=="52599d9d8aa170e7ec476a70b1bf1c93":
+=======
+        if self.get_argument("myid")=="XXXXXXXXX md5sum code XXXXXXXXXXX":
+>>>>>>> b3942465ac4a3806a6f3b0872a8b3537ad136fea
             sms_list = getSMSList()
             self.render("templates/index.html",smslist=get_sms_list_sort(sms_list))
 
     def post(self):
+<<<<<<< HEAD
         if self.get_argument("post_token")=="42062e9f759545e081c2b85fa77d591f":
+=======
+        if self.get_argument("myid")=="XXXXXXXXX another md5sum code XXXXXXXXXXX":
+>>>>>>> b3942465ac4a3806a6f3b0872a8b3537ad136fea
             number=self.get_argument("number").encode("utf-8")
             datetime=self.get_argument("datetime").encode("utf-8")
             text=self.get_argument("text").encode("utf-8")
