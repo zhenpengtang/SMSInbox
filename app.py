@@ -53,6 +53,7 @@ class SmsHandler(tornado.web.RequestHandler):
 application = tornado.web.Application([
     (r"/test", MainHandler),
 	(r"/showyoursms",SmsHandler),
+    (r"/(apple-touch-icon\.png)", tornado.web.StaticFileHandler, {"path": "static"}),
     (r"/css/(.*)", tornado.web.StaticFileHandler, {"path": "static/css"}),
     (r"/fonts/(.*)", tornado.web.StaticFileHandler, {"path": "static/fonts"}),
     (r"/js/(.*)", tornado.web.StaticFileHandler, {"path": "static/js"}),
